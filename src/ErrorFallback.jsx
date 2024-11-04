@@ -4,11 +4,11 @@ import ErrorStackParser from "error-stack-parser";
 
 export const ErrorFallback = ({ error }) => {
   const stackFrames = ErrorStackParser.parse(error);
-  const doneItRef = useRef(false);
+  const madeNetworkCallRef = useRef(false);
   const [expandedStackFrames, setExpandedStackFrames] = useState();
 
   useEffect(() => {
-    const doIt = async () => {
+    const makeNetworkCall = async () => {
       try {
         const response = await fetch(`/expandStack`, {
           method: `POST`,
@@ -27,9 +27,9 @@ export const ErrorFallback = ({ error }) => {
       }
     };
 
-    if (!doneItRef.current) {
-      doneItRef.current = true;
-      doIt();
+    if (!madeNetworkCallRef.current) {
+      madeNetworkCallRef.current = true;
+      makeNetworkCall();
     }
   }, [stackFrames]);
 
